@@ -28,12 +28,13 @@ public class JobEntity {
 
     private String benefits;
     
+    @ManyToOne()
+    @JoinColumn(name = "company_id", nullable=false, insertable=false, updatable=false)
+    private CompanyEntity companyEntity;
+
     @Column(name="company_id")
     private UUID company_id;
 
-    //@ManyToOne()
-    //@JoinColumn(name = "company_id")
-    //private CompanyEntity companyEntity;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
