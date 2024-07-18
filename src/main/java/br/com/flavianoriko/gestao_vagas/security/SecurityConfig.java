@@ -12,8 +12,14 @@ public class SecurityConfig {
     /* indicar q é um objeto ja gerenciado pelo spring e a gnt esta sobrescrevendo */
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-     http.csrf(csrf-> csrf.disable()); /* tipo de ataque cibernetico. Ele vai desabilitar pra gnt poder configurar como quiser */ 
-        return http.build();
+     http.csrf(csrf-> csrf.disable())
+     .authorizeHttpRequests(auth-> {auth.requestMatchers("/candidate/").permitAll()
+     .requestMatchers("/company/").permitAll()
+     .requestMatchers("/auth/company").permitAll(); /* tipo de ataque cibernetico. Ele vai desabilitar pra gnt poder configurar como quiser */ 
+     auth.anyRequest().authenticated();
+     });
+     
+     return http.build();
     }
 
     @Bean
