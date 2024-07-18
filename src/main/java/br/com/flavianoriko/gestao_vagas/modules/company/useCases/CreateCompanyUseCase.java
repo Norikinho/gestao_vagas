@@ -15,12 +15,13 @@ public class CreateCompanyUseCase {
 
     public CompanyEntity execute(CompanyEntity companyEntity) {
         this.companyRepository
-                .findByUsernameOrEmail(companyEntity.getEmail(), companyEntity.getNome())
+                .findByUsernameOrEmail(companyEntity.getUsername(), companyEntity.getEmail())
                 .ifPresent((user) -> {
                     throw new UserFoundException();
                 });
         return this.companyRepository.save(companyEntity);
     }
+
 }
 
 
