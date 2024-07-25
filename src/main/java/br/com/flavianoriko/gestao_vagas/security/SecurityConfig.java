@@ -14,6 +14,9 @@ public class SecurityConfig {
     /* indicar q é um objeto ja gerenciado pelo spring e a gnt esta sobrescrevendo */
     @Autowired
     private SecurityFilter securityFilter;
+    
+    @Autowired
+    private SecurityCandidateFilter securityCandidateFilter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -25,7 +28,8 @@ public class SecurityConfig {
      .requestMatchers("/auth/company").permitAll(); /* tipo de ataque cibernetico. Ele vai desabilitar pra gnt poder configurar como quiser */ 
      auth.anyRequest().authenticated();
      })
-     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
+     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
+     .addFilterBefore(securityCandidateFilter, BasicAuthenticationFilter.class);
      
      return http.build();
     }
