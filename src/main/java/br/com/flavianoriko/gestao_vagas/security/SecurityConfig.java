@@ -18,8 +18,10 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
      http.csrf(csrf-> csrf.disable())
-     .authorizeHttpRequests(auth-> {auth.requestMatchers("/candidate/").permitAll()
+     .authorizeHttpRequests(auth-> {auth
+     .requestMatchers("/candidate/").permitAll()
      .requestMatchers("/company/").permitAll()
+     .requestMatchers("/candidate/auth").permitAll()
      .requestMatchers("/auth/company").permitAll(); /* tipo de ataque cibernetico. Ele vai desabilitar pra gnt poder configurar como quiser */ 
      auth.anyRequest().authenticated();
      })
