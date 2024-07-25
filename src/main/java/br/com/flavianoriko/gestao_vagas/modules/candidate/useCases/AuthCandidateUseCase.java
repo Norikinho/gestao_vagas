@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 import javax.naming.AuthenticationException;
 
-import org.hibernate.validator.internal.util.privilegedactions.IsClassPresent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +30,7 @@ public class AuthCandidateUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    
     public AuthCandidateResponseDTO execute(AuthCandidateRequestDTO authCandidateRequestDTO) throws AuthenticationException {
         var candidate = this.candidateRepository.findByUsername(authCandidateRequestDTO.username())
                 .orElseThrow(() -> {
@@ -42,13 +42,13 @@ public class AuthCandidateUseCase {
         if (!passwordMatches) {
             throw new AuthenticationException();
         }
-
+         
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
         var token = JWT.create()
                 .withIssuer("javagas")
                 .withSubject(candidate.getId().toString())
                 .withClaim("roles", Arrays.asList("candidate"))
-                .withExpiresAt(Instant.now().plus(Duration.ofMinutes(10)))
                 .sign(algorithm);
         //role do usuario. quando estiver usando o filter, tem que passar
         //se o usuario eh uma company, um candidato e dependendo, vai ter 
@@ -56,6 +56,7 @@ public class AuthCandidateUseCase {
 
         var authCandidateResponse = AuthCandidateResponseDTO.builder()
         .access_token(token)
+        .expiresIn(expiresIn.toEpochMilli())
         .build();
 
         return authCandidateResponse;
