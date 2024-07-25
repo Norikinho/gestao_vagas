@@ -4,12 +4,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.flavianoriko.gestao_vagas.modules.candidate.CandidateEntity;
 import br.com.flavianoriko.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
+import br.com.flavianoriko.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/candidate")
 public class CandidateController {
    
+   @Autowired
+   private ProfileCandidateUseCase profileCandidateUseCase;
+
    @Autowired 
    private CreateCandidateUseCase createCandidateUseCase;
 
@@ -42,6 +48,21 @@ public class CandidateController {
     public String getCandidate(@RequestParam Map<String, String> allParams) {
        System.out.println("Candidato");
        return "Teste" +allParams.entrySet();
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Object> get(HttpServletRequest request){
+      var idCandidate = request.getAttribute("candidate_id");
+      try{
+         var profile = this.profileCandidateUseCase
+         .execute(UUID.fromString(idCandidate.toString()));
+         return ResponseEntity.ok().body(profile);
+      }
+      catch(Exception e)
+      {
+         return ResponseEntity.badRequest().body(e.getMessage());
+      }
+
     }
     
 }
