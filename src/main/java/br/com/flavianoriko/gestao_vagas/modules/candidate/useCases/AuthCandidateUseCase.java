@@ -48,7 +48,7 @@ public class AuthCandidateUseCase {
         var token = JWT.create()
                 .withIssuer("javagas")
                 .withSubject(candidate.getId().toString())
-                .withClaim("roles", Arrays.asList("candidate"))
+                .withClaim("roles", Arrays.asList("CANDIDATE"))
                 .sign(algorithm);
         //role do usuario. quando estiver usando o filter, tem que passar
         //se o usuario eh uma company, um candidato e dependendo, vai ter 
