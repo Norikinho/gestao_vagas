@@ -1,8 +1,6 @@
 package br.com.flavianoriko.gestao_vagas.security;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
+import java.io.IOException;s;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
