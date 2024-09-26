@@ -22,6 +22,14 @@ public class SecurityConfig {
     @Autowired
     private SecurityCandidateFilter securityCandidateFilter;
 
+    private static final String[] SWAGGER_LIST =
+    {
+        "/swagger-ui/**",
+        "/v3-api-doces/**",
+        "/swagger-resources/**"
+
+    };
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
@@ -30,8 +38,10 @@ public class SecurityConfig {
                             .requestMatchers("/candidate/").permitAll()
                             .requestMatchers("/company/").permitAll()
                             .requestMatchers("/company/auth").permitAll()
-                            .requestMatchers("/candidate/auth").permitAll(); /*
-                                                                              * tipo de ataque cibernetico. Ele vai
+                            .requestMatchers("/candidate/auth").permitAll()
+                            .requestMatchers(SWAGGER_LIST).permitAll(); 
+                            /*
+                                                                             tipo de ataque cibernetico. Ele vai
                                                                               * desabilitar pra gnt poder configurar
                                                                               * como quiser
                                                                               */
