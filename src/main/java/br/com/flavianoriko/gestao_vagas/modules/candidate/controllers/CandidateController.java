@@ -3,14 +3,17 @@ package br.com.flavianoriko.gestao_vagas.modules.candidate.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.flavianoriko.gestao_vagas.modules.candidate.CandidateEntity;
+import br.com.flavianoriko.gestao_vagas.modules.candidate.useCases.ListAllJobsFilterUserCase;
 import br.com.flavianoriko.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.flavianoriko.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
+import br.com.flavianoriko.gestao_vagas.modules.company.entities.JobEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -32,6 +35,9 @@ public class CandidateController {
    @Autowired 
    private CreateCandidateUseCase createCandidateUseCase;
 
+   @Autowired
+   private ListAllJobsFilterUserCase listAllJobsFilterUserCase;
+
     @PostMapping("/")
     public ResponseEntity<Object> create(@Valid @RequestBody CandidateEntity candidateEntity) {
       try{
@@ -51,6 +57,17 @@ public class CandidateController {
        return "Teste" +allParams.entrySet();
     }
 
+    @GetMapping("/job")
+    @PreAuthorize("hasRole('Candidate')")
+    public List<JobEntity> findJobByFilter(@RequestParam String filter)
+    {
+      return this.listAllJobsFilterUserCase.execute(filter);
+    }
+    
+    public String getMethodName(@RequestParam String param) {
+        return new String();
+    }
+    
     @GetMapping("/")
     @PreAuthorize("hasRole('CANDIDATE')")
     public ResponseEntity<Object> get(HttpServletRequest request){

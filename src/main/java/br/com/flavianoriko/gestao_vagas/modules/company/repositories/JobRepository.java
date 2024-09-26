@@ -1,5 +1,6 @@
 package br.com.flavianoriko.gestao_vagas.modules.company.repositories;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -10,5 +11,10 @@ import br.com.flavianoriko.gestao_vagas.modules.company.entities.JobEntity;
 
 public interface JobRepository extends JpaRepository<JobEntity, UUID>{
     Optional<JobEntity> findByTitle(String title);
+
+    //contains 
+
+    List<JobEntity>findByDescriptionContaining(String filter);
+
     
 }
