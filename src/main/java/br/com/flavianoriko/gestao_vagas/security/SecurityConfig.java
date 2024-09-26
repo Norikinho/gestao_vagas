@@ -22,13 +22,12 @@ public class SecurityConfig {
     @Autowired
     private SecurityCandidateFilter securityCandidateFilter;
 
-    private static final String[] SWAGGER_LIST =
-    {
+    private static final String[] SWAGGER_LIST = {
         "/swagger-ui/**",
-        "/v3-api-doces/**",
-        "/swagger-resources/**"
-
+        "/v3/api-docs/**",
+        "/swagger-resource/**",
     };
+    
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
